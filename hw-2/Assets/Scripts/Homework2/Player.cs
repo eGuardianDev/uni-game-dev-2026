@@ -33,6 +33,8 @@ using UnityEngine;
                 Debug.Log(isGrounded);
             }
             
+            animator.SetBool("Jump", !isGrounded);
+            
             
             isGrounded = Physics2D.OverlapCircle(groundChecker.position, groundCheckerRadius, groundLayer);
             input = Input.GetAxis("Horizontal");

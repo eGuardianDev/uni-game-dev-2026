@@ -8,6 +8,8 @@ public class Health : MonoBehaviour
     Animator animator;
     public int currentHealth = 0;
 
+    private bool can_be_hit = true;
+
     public Volume volume;
     private Vignette vignette;
     private DepthOfField dof;
@@ -24,6 +26,7 @@ public class Health : MonoBehaviour
         volume.profile.TryGet(out vignette);
         volume.profile.TryGet(out dof);
         // OnPlayerHit();
+        dof.active = false;
     }
 
     // Update is called once per frame
@@ -46,17 +49,21 @@ public class Health : MonoBehaviour
         }
     }
 
-    public void OnPlayerHit()
+    public void GetHit()
     {
-        currentHealth--;
-        animator.SetTrigger("hurt");
-        StartCoroutine(HitBlur());
+        if (can_be_hit)
+        {
+            currentHealth--;
+            animator.SetTrigger("Damaged");
+            StartCoroutine(HitBlur());
+        }
     }
-
     IEnumerator HitBlur()
     {
+        can_be_hit = false;
         dof.active = true;
-        yield return new WaitForSeconds(2f);
+        yield return new WaitForSeconds(1f);
         dof.active = false;
+        can_be_hit = true;
     }
 }
