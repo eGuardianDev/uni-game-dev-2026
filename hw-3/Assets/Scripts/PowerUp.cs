@@ -1,3 +1,4 @@
+using System.Runtime.CompilerServices;
 using UnityEngine;
 
 public class PowerUp : MonoBehaviour
@@ -14,15 +15,20 @@ public class PowerUp : MonoBehaviour
     {
         
     }
+
+    void playerBoost(Collider2D collision)
+    {
+        Rigidbody2D rb = collision.GetComponent<Rigidbody2D>();
+
+        rb.linearVelocity = new Vector2(rb.linearVelocity.x, 0f);
+
+        rb.AddForce(Vector2.up * jumpingForce, ForceMode2D.Impulse);
+    }
     void OnTriggerEnter2D(Collider2D collision)
     {
         if(collision.gameObject.layer == LayerMask.NameToLayer("Player"))
         {
-            Rigidbody2D rb = collision.GetComponent<Rigidbody2D>();
-
-            rb.linearVelocity = new Vector2(rb.linearVelocity.x, 0f);
-
-            rb.AddForce(Vector2.up * jumpingForce, ForceMode2D.Impulse);
+            playerBoost(collision);
         }
     }
 }

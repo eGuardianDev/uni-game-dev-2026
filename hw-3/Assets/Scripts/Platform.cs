@@ -15,6 +15,11 @@ public class Platform : MonoBehaviour
 
     public SpriteRenderer platformSprite;
 
+    public Transform DecorationSpawn1;
+    public Transform DecorationSpawn2;
+    public GameObject decorationPrefab;   
+    public Transform Spawner_pickups;
+    public Transform Spawner_jumping_powerup;
 
     bool fallen = false;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
@@ -29,8 +34,20 @@ public class Platform : MonoBehaviour
             c.a = 0.75f; 
             platformSprite.color = c;
         }
-        // if(falling)
-        //     rb.constraints = RigidbodyConstraints2D.None;
+      
+        GameObject obj = Instantiate(
+            decorationPrefab,
+            DecorationSpawn1.position,
+            DecorationSpawn1.rotation
+        );
+        obj.transform.SetParent(this.transform);
+
+        obj = Instantiate(
+            decorationPrefab,
+            DecorationSpawn2.position,
+            Quaternion.identity
+        );
+        obj.transform.SetParent(this.transform);
     }
 
     // Update is called once per frame

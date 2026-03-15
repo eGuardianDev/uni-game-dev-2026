@@ -6,11 +6,12 @@ using System.Collections;
 using TMPro;
 public class Health : MonoBehaviour
 {
+    bool death = false;
     Animator animator;
     public int currentHealth = 0;
     public int MaxAttackTime = 5;
 
-    private bool can_be_hit = true;
+    public bool can_be_hit = true;
 
     public Volume volume;
     private Vignette vignette;
@@ -23,45 +24,74 @@ public class Health : MonoBehaviour
     public TextMeshProUGUI ImmuneText;
 
     public bool CanDamage;
+
+    public GameObject deathParticles;
     
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {        
         animator = GetComponent<Animator>();
-        currentHealth = Healths.Length;
-        volume.profile.TryGet(out vignette);
-        volume.profile.TryGet(out dof);
+        if(Healths != null)
+        {
+            currentHealth = Healths.Length;
+        }
+        else
+        {
+            currentHealth = 3;
+        }
+        if(volume != null)
+        {
+            volume.profile.TryGet(out vignette);
+            volume.profile.TryGet(out dof);
+        }
         // OnPlayerHit();
-        dof.active = false;
+        if(dof != null)
+        {
+            dof.active = false;
+        }
     }
 
     // Update is called once per frame
     void Update()
     {
-        for(int i =0 ;i<Healths.Length; ++i)
-        {
-            if(i < currentHealth)
-                Healths[i].texture = FullHearth;
+
+        int count =3;
+        if(Healths != null)
+        {        
+            count = Healths.Length;
+            for(int i =0 ;i<count; ++i)
+            {
+                if(i < currentHealth)
+                    Healths[i].texture = FullHearth;
+                else
+                    Healths[i].texture = EmptyHearth;
+            }   
+            if (currentHealth <= 1)
+            {
+                vignette.intensity.value = Mathf.Lerp(vignette.intensity.value, 0.45f, Time.deltaTime * 5f);
+            }
             else
-                Healths[i].texture = EmptyHearth;
-        }   
-        if (currentHealth <= 1)
-        {
-            vignette.intensity.value = Mathf.Lerp(vignette.intensity.value, 0.45f, Time.deltaTime * 5f);
-        }
-        else
-        {
-            vignette.intensity.value = Mathf.Lerp(vignette.intensity.value, 0f, Time.deltaTime * 5f);
-        }
+            {
+                vignette.intensity.value = Mathf.Lerp(vignette.intensity.value, 0f, Time.deltaTime * 5f);
+            }
+        } 
     }
 
     public void GetHit()
     {
         if (can_be_hit)
         {
-            currentHealth--;
-            animator.SetTrigger("Damaged");
-            StartCoroutine(HitBlur());
+            --currentHealth;
+            if(animator != null)
+            {
+                animator.SetTrigger("Damaged");
+                StartCoroutine(HitBlur());
+            }
+        }
+        if (currentHealth == 0 && !death )
+        {
+            onDeath();
+            death = true;
         }
     }
     IEnumerator HitBlur()
@@ -77,6 +107,14 @@ public class Health : MonoBehaviour
     void powerUP()
     {
         StartCoroutine(immune());
+    }
+
+    void onDeath()
+    {
+        Instantiate(deathParticles, this.transform.position, this.transform.rotation);
+        // Destroy(this.gameObject);
+        Transform firstChild = transform.GetChild(0);
+        firstChild.gameObject.SetActive(false);
 
     }
 
@@ -114,6 +152,7 @@ public class Health : MonoBehaviour
          && collision.gameObject.layer == LayerMask.NameToLayer("Enemy"))
         {
             Destroy(collision.gameObject);
+            Instantiate(deathParticles, collision.transform.position, collision.transform.rotation);
         } 
     }
 }

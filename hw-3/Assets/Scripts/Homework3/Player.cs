@@ -15,6 +15,7 @@ using UnityEngine;
         public float groundCheckerRadius;
         public SpriteRenderer playerSprite;
 
+        public GameObject jumpParticles;
 
         public bool displayDebug = false;
         // Start is called once before the first execution of Update after the MonoBehaviour is created
@@ -56,6 +57,8 @@ using UnityEngine;
         public void Jump()
         {
             rb.AddForce(Vector2.up * jumpingForce, ForceMode2D.Impulse);
+            Instantiate(jumpParticles, groundChecker.position , groundChecker.rotation);
+
         }
         void OnTriggerEnter2D(Collider2D collision)
         {
