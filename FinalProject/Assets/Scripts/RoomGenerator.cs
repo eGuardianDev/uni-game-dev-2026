@@ -2,6 +2,10 @@ using UnityEngine;
 using System.Collections;
 
 using System.Collections.Generic;
+using NavMeshPlus.Components;
+
+// using UnityEngine.AI;
+// using Unity.AI.Navigation;
 public class RoomGenerator : MonoBehaviour
 {
     public GameObject[] rooms;
@@ -15,6 +19,8 @@ public class RoomGenerator : MonoBehaviour
 
     public Stack<RoomSpawner> possibleLocations = new Stack<RoomSpawner>();
 
+    [SerializeField] private NavMeshPlus.Components.NavMeshSurface navMeshSurface_;
+    // [SerializeField] private NavMeshSurface navMeshSurface_;
     System.Random rng;
 
       public int RandomRange(int min, int max) // max exclusive
@@ -61,27 +67,25 @@ public class RoomGenerator : MonoBehaviour
                 r_spawner.spawned = true;
 
 
-                // Physics2D.Simulate(Time.fixedDeltaTime);
 
                 RoomSpawn sp = room.GetComponent<RoomSpawn>();
                 sp.id = r_spawner.id;
                 sp.Spawn_counter = dept_counted;
                 dept_counted++;
 
-                // yield return new WaitForSeconds(1f);s
                 sp.SpawnLoop();
-            // while (!sp.finished_calc)
-            // {
-            //     //wait 
-            // }
-            //     count =0;
-            // }
-            // count++;
-
+      
         }
-
+        StartCoroutine(BakeAsync());
     }
 
+    IEnumerator BakeAsync()
+    {
+        yield return new WaitForSeconds(2f);
+        var op = navMeshSurface_.BuildNavMeshAsync();
+        yield return op;
+        Debug.Log("NavMesh baked!");
+    }
     // Update is called once per frame
     void Update()
     {
