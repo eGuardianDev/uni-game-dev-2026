@@ -8,14 +8,19 @@ public class PlayerScript : MonoBehaviour
 
     
     [Header("Stats")]
-    [SerializeField] private int health_ = 100;
-    [SerializeField] private int max_health_ = 100;
-    [SerializeField] private int damage_ = 10;
-    [SerializeField] private int attack_speed_ = 1;
-    [SerializeField] private int movement_speed_ = 5;
-    [SerializeField] private int armour_ = 0;
-    [SerializeField] private int mana_ = 0;
-    [SerializeField] private int max_mana_ = 100;
+    [SerializeField] public int health_ = 100;
+    [SerializeField] public int max_health_ = 100;
+    [SerializeField] public int final_max_health_ = 100;
+    [SerializeField] public int damage_ = 10;
+    [SerializeField] public int final_damage_ = 10;
+    [SerializeField] public int attack_speed_ = 1;
+    [SerializeField] public int final_attack_speed_ = 1;
+    [SerializeField] public int movement_speed_ = 5;
+    [SerializeField] public int final_movement_speed_ = 5;
+    [SerializeField] public int armour_ = 0;
+    [SerializeField] public int mana_ = 0;
+    [SerializeField] public int max_mana_ = 100;
+    [SerializeField] public int final_max_mana_ = 100;
     
     public int Health {
         get{
@@ -55,13 +60,15 @@ public class PlayerScript : MonoBehaviour
     [SerializeField] private UI_Manager gm_ui_;
 
 
-
+    UnityEngine.AI.NavMeshAgent agent;
     void Start()
     {
+        agent = GetComponent<UnityEngine.AI.NavMeshAgent>();
+        final_max_health_ = max_health_;
         gm_Behavior_ = GameObject.Find("GameManager").GetComponent<GameBehavior>();
         gm_ui_ = GameObject.Find("GameManager").GetComponent<UI_Manager>();
 
-        health_slider_.maxValue = max_health_;
+        health_slider_.maxValue = final_max_health_;
         mana_slider_.maxValue = max_mana_;
 
         if (GameData.Instance != null && GameData.Instance.p_health > 0)
@@ -71,16 +78,28 @@ public class PlayerScript : MonoBehaviour
         }
         else
         {
-            health_ = max_health_;
+            health_ = final_max_health_;
             mana_ = max_mana_;
         }
 
         health_slider_.value = health_;
         mana_slider_.value = mana_;
-        health_text_.text = health_ + "/" + max_health_;
+        health_text_.text = health_ + "/" + final_max_health_;
         mana_text_.text = mana_ + "/" + max_mana_;
 
         StartCoroutine(regenerateMana());
+    }
+
+    public void update_HUD()
+    {
+        health_slider_.maxValue = final_max_health_;
+        mana_slider_.maxValue = max_mana_;
+
+        health_text_.text = health_ + "/" + final_max_health_;
+        mana_text_.text = mana_ + "/" + max_mana_;
+        
+        health_slider_.value = health_;
+        mana_slider_.value = mana_;
     }
 
 
@@ -94,6 +113,7 @@ public class PlayerScript : MonoBehaviour
 
     void Update()
     {
+        agent.speed = final_movement_speed_;
         if(gm_Behavior_.Is_Paused) return;
 
         if (enemy_ != null && IsInAttackRange() && engage_enemy_)
@@ -108,7 +128,7 @@ public class PlayerScript : MonoBehaviour
         health_ -= finalDamage;
 
         health_slider_.value = health_;
-        health_text_.text = health_ +"/"+ max_health_;
+        health_text_.text = health_ +"/"+ final_max_health_;
 
         if (health_ <= 0)
         {
@@ -117,10 +137,10 @@ public class PlayerScript : MonoBehaviour
     }
     public void GetHealth(int amount)
     {
-        health_ = Mathf.Min(health_+amount, max_health_);
+        health_ = Mathf.Min(health_+amount, final_max_health_);
 
         health_slider_.value = health_;
-        health_text_.text = health_ +"/"+ max_health_;
+        health_text_.text = health_ +"/"+ final_max_health_;
 
     }
 
@@ -129,7 +149,7 @@ public class PlayerScript : MonoBehaviour
         health_ = Mathf.Min(amount, max_health_);
 
         health_slider_.value = health_;
-        health_text_.text = health_ +"/"+ max_health_;
+        health_text_.text = health_ +"/"+ final_max_health_;
     }
     public void SetMana(int amount)
     {
@@ -170,7 +190,7 @@ public class PlayerScript : MonoBehaviour
         {
             // Debug.Log("Player Attacks");
             enemy_.GetDamage(damage_);
-            attackTimer_ = 1f / attack_speed_;
+            attackTimer_ = 1f / final_attack_speed_;
         }
     }
     bool IsInAttackRange()

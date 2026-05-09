@@ -739,6 +739,58 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 96404355}
   m_CullTransparentMesh: 1
+--- !u!1 &103155316
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 103155318}
+  - component: {fileID: 103155317}
+  m_Layer: 0
+  m_Name: EffectSpeed
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &103155317
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 103155316}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 92957a70a4e1fb9499132a76123214eb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Effect
+  icon: {fileID: 0}
+  name: Health
+  description: BoostHealth
+  cooldown: 15
+  modifiers:
+  - stat: 3
+    modifierType: 0
+    amount: 8
+--- !u!4 &103155318
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 103155316}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -24, y: 44, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &112864833
 GameObject:
   m_ObjectHideFlags: 0
@@ -2828,7 +2880,7 @@ MonoBehaviour:
   edgeThreshold: 25
   LockedOnRoom_: {fileID: 994442368}
   target: {fileID: 1129552436}
-  maxY_: 7
+  maxY_: 5.5
   maxX_: 1
   smoothSpeed_: 15
   followPlayer_: 0
@@ -4190,6 +4242,58 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 831068745}
   m_CullTransparentMesh: 1
+--- !u!1 &903675777
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 903675779}
+  - component: {fileID: 903675778}
+  m_Layer: 0
+  m_Name: EffectHealth
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &903675778
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 903675777}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 92957a70a4e1fb9499132a76123214eb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Effect
+  icon: {fileID: 0}
+  name: Health
+  description: BoostHealth
+  cooldown: 15
+  modifiers:
+  - stat: 0
+    modifierType: 0
+    amount: 15
+--- !u!4 &903675779
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 903675777}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -24, y: 44, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &912463734
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -5370,6 +5474,7 @@ GameObject:
   - component: {fileID: 1129552438}
   - component: {fileID: 1129552440}
   - component: {fileID: 1129552441}
+  - component: {fileID: 1129552442}
   m_Layer: 0
   m_Name: Player
   m_TagString: Player
@@ -5568,12 +5673,17 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::PlayerScript
   health_: 100
   max_health_: 100
+  final_max_health_: 100
   damage_: 25
+  final_damage_: 10
   attack_speed_: 2
-  movement_speed_: 5
+  final_attack_speed_: 1
+  movement_speed_: 8
+  final_movement_speed_: 5
   armour_: 0
   mana_: 0
   max_mana_: 100
+  final_max_mana_: 100
   enemy_: {fileID: 0}
   engage_enemy_: 0
   attack_radius_: 2
@@ -5613,6 +5723,21 @@ MonoBehaviour:
   player_script_: {fileID: 0}
   ability_range_: {fileID: 1827038529}
   gm_Behavior_: {fileID: 0}
+--- !u!114 &1129552442
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1129552433}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6c7b9aac6affca3b59dd7b339dc29431, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::EffectSystem
+  playerScript: {fileID: 0}
+  effects:
+  - {fileID: 903675778}
 --- !u!1 &1146342458
 GameObject:
   m_ObjectHideFlags: 0
@@ -11768,3 +11893,5 @@ SceneRoots:
   - {fileID: 2045270505}
   - {fileID: 1521789923}
   - {fileID: 1301179311}
+  - {fileID: 903675779}
+  - {fileID: 103155318}
