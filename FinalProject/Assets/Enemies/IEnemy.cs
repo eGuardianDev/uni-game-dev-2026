@@ -3,37 +3,68 @@ using System.Collections;
 public class Enemy : MonoBehaviour
 {
     [Header("Stats")]
-    [SerializeField] private int health_ = 100;
-    [SerializeField] private int damage_ = 10;
-    [SerializeField] private int attack_speed_ = 1;
-    [SerializeField] private int movement_speed_ = 5;
-    [SerializeField] private int armour_ = 0;
+    [SerializeField] protected int health_ = 100;
+    [SerializeField] protected int damage_ = 10;
+    [SerializeField] protected bool touch_damage_ = false;
+    [SerializeField] protected int touch_damage_amount_ = 10;
+        public int Damage
+    {
+        get
+        {
+            return damage_;
+        }
+    }
+    [SerializeField] protected float attack_speed_ = 1;
+    [SerializeField] protected int movement_speed_ = 5;
+    [SerializeField] protected int armour_ = 0;
     
-    [SerializeField] private ParticleSystem hit_particles_;
+    [SerializeField] protected ParticleSystem hit_particles_;
     
     [Header("Detection")]
-    [SerializeField] private float attack_radius_ = 2f;
+    [SerializeField] protected float attack_radius_ = 2f;
     [SerializeField] public float detection_radius_ = 10f;
 
     [Header("Player")]
-    [SerializeField] private Transform player_;
-    [SerializeField] private PlayerScript player_script_;
+    [SerializeField] protected Transform player_;
+    [SerializeField] protected PlayerScript player_script_;
 
+    [Header("Drops")]
+    [SerializeField] protected int mana_drop_ = 0;
+    [SerializeField] protected GameObject mana_object_;
+    [SerializeField] protected int health_drop_ = 0;
+    [SerializeField] protected GameObject health_object_;
 
+    [SerializeField] protected int money_drop_ = 0;
+    
+    [Header("Behavior")]
+    [SerializeField] protected GameBehavior gm_Behavior_;
+    [SerializeField] protected RoomGenerator gm_Room_gen_;
+
+    [SerializeField] protected bool Player_in_room = false; 
     protected virtual void Start()
     {
+        Player_in_room = false;
+        gm_Behavior_ = GameObject.Find("GameManager").GetComponent<GameBehavior>();
+        gm_Room_gen_ = GameObject.Find("GameManager").GetComponent<RoomGenerator>();
+
         player_ = GameObject.FindGameObjectWithTag("Player")?.transform;
         player_script_ = GameObject.FindGameObjectWithTag("Player")?.GetComponent<PlayerScript>();
     }
 
     protected virtual void Update()
     {
+        if(gm_Behavior_.Is_Paused) return;
+
+        if(!Player_in_room) return;
+        attackTimer_ -= Time.deltaTime;
+
         if (player_ == null) return;
 
         if (Detectplayer_IsClose())
         {
             if (IsInAttackRange())
             {
+                Debug.Log("Attacking player");
                 AttackPlayer();
             }
             else
@@ -54,14 +85,14 @@ public class Enemy : MonoBehaviour
             Die();
         }
     }
-    private IEnumerator FlashRed()
+    protected IEnumerator FlashRed()
     {
         GetComponent<SpriteRenderer>().color = Color.red;
         yield return new WaitForSeconds(0.1f);
         GetComponent<SpriteRenderer>().color = Color.white;
     }
-    private float attackTimer_ = 0f;
-
+    protected float attackTimer_ = 0f;
+    protected bool IsAttackOnCooldown => attackTimer_ > 0f;
     protected virtual void AttackPlayer()
     {
         attackTimer_ -= Time.deltaTime;
@@ -73,6 +104,10 @@ public class Enemy : MonoBehaviour
         }
     }
 
+    public virtual void Engage()
+    {
+        Player_in_room = true;
+    }
     protected virtual bool Detectplayer_IsClose()
     {
         return Vector3.Distance(transform.position, player_.position) <= detection_radius_;
@@ -92,12 +127,55 @@ public class Enemy : MonoBehaviour
         );
     }
 
-     protected virtual void Die()
+    protected virtual void SpawnMana(){
+        GameObject mana = Instantiate(mana_object_, transform.position, Quaternion.identity);
+        mana.GetComponent<Mana>().value = mana_drop_;
+    }
+    protected virtual void SpawnHealth(){
+        GameObject mana = Instantiate(health_object_, transform.position, Quaternion.identity);
+        mana.GetComponent<Health>().value = health_drop_;
+    }
+    protected virtual void Die()
     {
+        onDeath();
         hit_particles_.transform.SetParent(null); 
         hit_particles_.Emit(25);
+        if(mana_drop_ > 0)
+        {
+            SpawnMana();
+        }
+        if(health_drop_ > 0)
+        {
+            SpawnHealth();
+        }
         Destroy(hit_particles_.gameObject, 2f); 
         Destroy(gameObject);
+        if (GameData.Instance)
+        {
+            GameData.Instance.killed_enemies++;
+            GameData.Instance.points+=5;
+        }
+    }
+
+    protected virtual void onDeath()
+    {
+    }
+
+    private float damageTimer_ = 0f;
+    private void OnTriggerEnter2D(Collider2D other)
+    {
+        if (touch_damage_)
+        {       
+            if (other.CompareTag("Player"))
+            {
+                damageTimer_ -= Time.deltaTime;
+                if (damageTimer_ <= 0f)
+                {
+                    other.GetComponent<PlayerScript>().GetDamage(touch_damage_amount_   );
+                    damageTimer_ = 1f / attack_speed_;
+                }
+            }
+        }
     }
     // state machine
     enum EnemyState { Idle, Chase, Attack }

@@ -52,7 +52,8 @@ public class CameraFollow : MonoBehaviour
     void LateUpdate()
     {
         Vector3 pos = transform.position;
-
+        if(target == null) return;
+        
         if (followPlayer_)
         {
             float targetY = Mathf.Clamp(target.position.y, LockedOnRoom_.position.y-maxY_, LockedOnRoom_.position.y+maxY_);

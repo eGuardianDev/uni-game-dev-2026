@@ -6,6 +6,8 @@ TagManager:
   tags:
   - room_spawner
   - Enemy
+  - Pickable
+  - AbilityPickUp
   layers:
   - Default
   - TransparentFX

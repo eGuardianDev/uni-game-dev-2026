@@ -19,7 +19,7 @@
 
 # JetBrains Rider plugin
 **/[Aa]ssets/Plugins/Editor/JetBrains*
-
+**/Assets/_Recovery/
 # Rider user settings
 *.DotSettings.user
 
