@@ -8,6 +8,7 @@ public class GameData : MonoBehaviour
 {
     public int killed_enemies;
     public int points;
+    public int level;
 
     bool firstTime = true;
 
@@ -38,10 +39,14 @@ public class GameData : MonoBehaviour
     public float transitioning_time = 1f;
     IEnumerator Transition()
     {
-        PlayerScript ps = GameObject.Find("Player").GetComponent<PlayerScript>();
-        save_abilities();
-        this.p_health = ps.Health;
-        this.p_mana = ps.Mana;
+        GameObject player;
+        if ((player = GameObject.Find("Player")) != null)
+        {
+            PlayerScript ps = player.GetComponent<PlayerScript>();
+            save_abilities();
+            this.p_health = ps.Health;
+            this.p_mana = ps.Mana;
+        }
         transition.SetTrigger("Start");
         yield return new WaitForSeconds(transitioning_time);
         LoadNextScene();
@@ -70,18 +75,21 @@ public class GameData : MonoBehaviour
     {
         transition = GameObject.Find("FadeImage").GetComponent<Animator>();
 
-        // if (firstTime)
-        // {
-        //     firstTime = false;
-        //     return;
-        // }
-
-        PlayerScript ps = GameObject.Find("Player").GetComponent<PlayerScript>();
-        if (ps != null)
+        GameObject player = GameObject.Find("Player");
+        
+        if (player != null){
+            PlayerScript ps = player.GetComponent<PlayerScript>();
+            if (ps != null)
+            {
+                level+=1;
+                ps.SetHealth(p_health);
+                ps.SetMana(p_mana);
+                load_abilities();
+            }
+        }
+        else
         {
-            ps.SetHealth(p_health);
-            ps.SetMana(p_mana);
-            load_abilities();
+            level = 0;
         }
     }
 
@@ -127,6 +135,7 @@ public class GameData : MonoBehaviour
 
     private void OnSeedChanged(string value)
     {
+        level = 0;
         if (int.TryParse(value, out int parsed))
         {
             seed = parsed;

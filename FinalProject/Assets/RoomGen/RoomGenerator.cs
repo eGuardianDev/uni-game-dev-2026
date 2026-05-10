@@ -20,6 +20,8 @@ public class RoomGenerator : MonoBehaviour
 
     public Stack<RoomSpawner> possibleLocations = new Stack<RoomSpawner>();
 
+    public Animator anim;
+
     [SerializeField] private NavMeshPlus.Components.NavMeshSurface navMeshSurface_;
     [SerializeField] private NavMeshPlus.Components.NavMeshSurface navMeshSurface_Battle_;
     // [SerializeField] private NavMeshSurface navMeshSurface_;
@@ -52,6 +54,10 @@ public class RoomGenerator : MonoBehaviour
             seed = GameData.Instance.seed;
         }
         rng = new System.Random(seed);
+        if (anim)
+        {
+            anim.speed = 0f; 
+        }
     }
 
     public GameObject nextRoom_portal;
@@ -132,6 +138,7 @@ public class RoomGenerator : MonoBehaviour
         {
             StartCoroutine(BakeAsync());
         }
+       
     }
 
     IEnumerator BakeAsync()
@@ -139,6 +146,10 @@ public class RoomGenerator : MonoBehaviour
         var op = navMeshSurface_.BuildNavMeshAsync();
         yield return op;
         Debug.Log("NavMesh baked!");
+        if (anim)
+        {
+            anim.speed = 1f;
+        }
     }    
     IEnumerator Bake_Battle_Async()
     {

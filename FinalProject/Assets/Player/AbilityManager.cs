@@ -23,7 +23,7 @@ public class AbilityManager : MonoBehaviour
 
         ability_range_ = transform.Find("AbilityRange").gameObject;
         player_script_ = GameObject.FindWithTag("Player").GetComponent<PlayerScript>();
-         foreach (GameObject obj in CoolDownTimer)
+        foreach (GameObject obj in CoolDownTimer)
         {
             if (obj != null && obj.transform.childCount > 0)
             {
@@ -31,6 +31,7 @@ public class AbilityManager : MonoBehaviour
 
                 if (text != null)
                 {
+                    text.text = "";
                     CoolDownTimer_Times.Add(text);
                 }
                 else

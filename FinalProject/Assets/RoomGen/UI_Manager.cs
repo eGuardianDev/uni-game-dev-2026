@@ -16,8 +16,10 @@ public class UI_Manager : MonoBehaviour
     [Header("death screen stats")]
     [SerializeField] public GameObject DeathSreen;
     [SerializeField] public TMP_Text ScoreText;
+    [SerializeField] public TMP_Text ScoreText2;
     [SerializeField] public TMP_Text LevelText;
     [SerializeField] public TMP_Text KilledEnemiesText;
+    [SerializeField] public TMP_Text KilledEnemiesText2;
     [SerializeField] public RoomGenerator roomGen;
     [SerializeField] public GameObject pickUpAbilityMenu;
     [SerializeField] public TMP_Text pickUpAbilityMenuName;
@@ -25,11 +27,24 @@ public class UI_Manager : MonoBehaviour
     [SerializeField] public TMP_Text pickUpAbilityMenuCastKey;
     [SerializeField] public Image pickUpAbilityMenuIcon;
     [SerializeField] public GameObject AbilityPickupsStatue;
+    [SerializeField] public GameObject ToolTip;
+    [SerializeField] public GameObject Final_Screen;
+
 
     private CanvasGroup hudCanvasGroup;
+   
+    
+    [SerializeField] private Slider music_slider;
+    [SerializeField]private AudioSource audioSource;
 
     void Start()
     {
+
+        music_slider.value = audioSource.volume; // init slider to current volume
+
+        music_slider.onValueChanged.AddListener(val =>
+            audioSource.volume = val);
+            
         roomGen = this.GetComponent<RoomGenerator>();
     
         GameObject fader = GameObject.Find("FadeImage");
@@ -77,14 +92,14 @@ public class UI_Manager : MonoBehaviour
 
     public void Display_Death_Screen()
     {
-        LevelText.text = "Reached level: " + roomGen.level;
+        // LevelText.text = "Reached level: " + roomGen.level;
         if (GameData.Instance)
         {
             KilledEnemiesText.text = "Enemies killed: " + GameData.Instance.killed_enemies;
-        }  
-        if (GameData.Instance)
-        {
+            KilledEnemiesText2.text = "Enemies killed: " + GameData.Instance.killed_enemies;
             ScoreText.text = "Your Score: " + GameData.Instance.points;
+            ScoreText2.text = "Your Score: " + GameData.Instance.points;
+            LevelText.text = "Level reached: " + GameData.Instance.level;
         }
         DeathSreen.SetActive(true);
     }

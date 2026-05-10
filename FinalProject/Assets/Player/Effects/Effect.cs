@@ -5,7 +5,8 @@ public enum StatType
     Health,
     AttackSpeed,
     Mana,
-    MovementSpeed
+    MovementSpeed,
+    Invicible     
 }
 
 public enum ModifierType
@@ -28,5 +29,5 @@ public class Effect : MonoBehaviour
     public string description;
     public float cooldown;
     public List<StatModifier> modifiers;
-
+    public EffectDataDisplay icon_displayer;
 }

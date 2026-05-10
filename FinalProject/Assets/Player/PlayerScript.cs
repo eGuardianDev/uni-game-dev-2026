@@ -22,6 +22,9 @@ public class PlayerScript : MonoBehaviour
     [SerializeField] public int max_mana_ = 100;
     [SerializeField] public int final_max_mana_ = 100;
     
+
+    public int Invicible = 0;
+    public int Invicible_default = 0;
     public int Health {
         get{
             return this.health_;
@@ -61,8 +64,12 @@ public class PlayerScript : MonoBehaviour
 
 
     UnityEngine.AI.NavMeshAgent agent;
+
+
+    SpriteRenderer sprites;
     void Start()
     {
+        sprites = GetComponent<SpriteRenderer>();
         agent = GetComponent<UnityEngine.AI.NavMeshAgent>();
         final_max_health_ = max_health_;
         gm_Behavior_ = GameObject.Find("GameManager").GetComponent<GameBehavior>();
@@ -113,6 +120,19 @@ public class PlayerScript : MonoBehaviour
 
     void Update()
     {
+        if(Invicible > 0)
+        {
+            Color c = sprites.color;
+            c.a = 0.75f;
+            sprites.color = c;
+        }
+        else
+        {
+            Color c = sprites.color;
+            c.a = 1f;
+            sprites.color = c;
+        }
+
         agent.speed = final_movement_speed_;
         if(gm_Behavior_.Is_Paused) return;
 
@@ -124,6 +144,7 @@ public class PlayerScript : MonoBehaviour
     // functions
     public void GetDamage(int amount)
     {
+        if(Invicible > 0) return;
         int finalDamage = Mathf.Max(amount - armour_, 0);
         health_ -= finalDamage;
 

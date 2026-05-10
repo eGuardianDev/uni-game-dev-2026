@@ -41,7 +41,7 @@ using TMPro;
             // Explicit RGBA32, no mip chain (mipmapCount = false)
             var tex = new Texture2D(dstW, dstH, TextureFormat.RGBA32, false);
             tex.filterMode = FilterMode.Point;
-            tex.alphaIsTransparency = true;   // satisfies the cursor requirement
+            // tex.alphaIsTransparency = true;
             tex.SetPixels(scaled);
             tex.Apply();
             return tex;

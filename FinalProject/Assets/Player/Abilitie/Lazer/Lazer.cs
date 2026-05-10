@@ -9,6 +9,7 @@ public class Lazer : Ability
     [Header("References")]
     [SerializeField] private LineRenderer lineRenderer;
 
+    [SerializeField] private float endOffset = 1.5f;
     private Camera cam;
     private Coroutine disableCoroutine;
 
@@ -20,7 +21,7 @@ public class Lazer : Ability
 
     protected override bool isCastable()
     {
-        return true; // or add mana check etc.
+        return true; 
     }
 
     protected override bool OnCast()
@@ -48,7 +49,7 @@ public class Lazer : Ability
 
         // Set laser end point to last hit or max range
         lineRenderer.SetPosition(1, hits.Length > 0 
-            ? hits[hits.Length - 1].point 
+            ? hits[hits.Length - 1].point + direction * endOffset
             : origin + direction * Range);
 
         // Restart fade timer

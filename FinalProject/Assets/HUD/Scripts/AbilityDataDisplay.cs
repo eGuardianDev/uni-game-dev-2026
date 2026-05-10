@@ -41,6 +41,10 @@ public class AbilityDataDisplay : MonoBehaviour, IPointerEnterHandler, IPointerE
 
     public void OnPointerEnter(PointerEventData e)
     {
+        if(abilityManager_.abilities[ability_index_] == null)
+        {
+            return;
+        }
         updates = true;
         tooltip_.SetActive(true);
     }
