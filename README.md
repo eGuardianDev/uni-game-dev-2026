@@ -18,11 +18,11 @@ Tsvetomir Staykov - 1MI0800469 - Computer Science
     - [X] Level progression
 - [X] Ability management system 
     - [X] Ability pickup system
-    - [ ] More abilities (currently 3)
+    - [X] More abilities
 - [ ] Player
     - [X] Movement Navigation Mesh
     - [X] Attack Enemies 
-    - [ ] Effect system (like potions)
+    - [X] Effect system
     - [ ] More player characters
 - [X] Enemies - 4 enemy types
     - [ ] Add more enemies...
@@ -38,7 +38,7 @@ Tsvetomir Staykov - 1MI0800469 - Computer Science
     - [X] Minimap 
     - [X] Dead screen 
     - [X] Pause menu (To be completed)
-    - [ ] End screen
+    - [X] End screen
 
 # Credits:
 Programming, Pixel art, concepts: Tsvetomir Staykov
