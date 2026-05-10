@@ -6,6 +6,7 @@ public class MainMenu : MonoBehaviour
 {
     [SerializeField] private GameObject MainMenu_;
     [SerializeField] private GameObject PlayerSelect_;
+    [SerializeField] private GameObject Credits;
     [SerializeField] private string MainGameSceneName_ = "MainGame";
     
     void Start()
@@ -31,6 +32,7 @@ public class MainMenu : MonoBehaviour
         {
             MainMenu_.SetActive(true);
             PlayerSelect_.SetActive(false);
+            Credits.SetActive(false);
         }));
     }
 
@@ -40,6 +42,18 @@ public class MainMenu : MonoBehaviour
         {
             MainMenu_.SetActive(false);
             PlayerSelect_.SetActive(true);
+            Credits.SetActive(false);
+
+        }));
+    }  
+    public void Open_Credits()
+    {
+        StartCoroutine(FadeBetweenTransition(() =>
+        {
+            MainMenu_.SetActive(false);
+            PlayerSelect_.SetActive(false);
+            Credits.SetActive(true);
+
         }));
     }
     public void Start_Game()

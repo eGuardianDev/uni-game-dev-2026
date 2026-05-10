@@ -194,7 +194,7 @@ MonoBehaviour:
   coolDown_: 60
   range_: 20
   Icon: {fileID: 21300000, guid: cf15972dad4b7a137bced45a245dcbe4, type: 3}
-  AssignedTo: 0
+  AssignedTo: 3
   player_script_: {fileID: 0}
   copy_offline: {fileID: 8746625109788460768}
   fadeDuration: 1
