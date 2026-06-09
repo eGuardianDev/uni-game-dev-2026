@@ -4948,6 +4948,15 @@ MonoBehaviour:
   damage_: 10
   touch_damage_: 0
   touch_damage_amount_: 10
+  sfxVolume: 1
+  getDamagedSound:
+  - {fileID: 8300000, guid: 51a86ab3c20d6f761af333b5ec1c8190, type: 3}
+  - {fileID: 8300000, guid: e1e6a38974dbce97287135f9e3fef9e2, type: 3}
+  - {fileID: 8300000, guid: d6e3e956c11b48979a2586e75c4af5fa, type: 3}
+  getDefeatedSound:
+  - {fileID: 8300000, guid: 6a17d2e39afbac4b48cddb800469fcdc, type: 3}
+  - {fileID: 8300000, guid: 45d0c78494a8be2a2bf53150b01073aa, type: 3}
+  - {fileID: 8300000, guid: 4bfa9820e64deccfa8eebb36f2486917, type: 3}
   attack_speed_: 0.5
   movement_speed_: 0
   armour_: 0
@@ -4962,6 +4971,7 @@ MonoBehaviour:
   health_object_: {fileID: 1307785850648463152, guid: 58ccd0c79246e9c02b539dc6923469c1, type: 3}
   money_drop_: 0
   gm_Behavior_: {fileID: 0}
+  gm_Room_gen_: {fileID: 0}
   Player_in_room: 0
   lineRenderer_: {fileID: 4003641009416498711}
   warningDuration_: 3

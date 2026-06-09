@@ -9,7 +9,6 @@ using NavMeshPlus.Components;
 public class RoomGenerator : MonoBehaviour
 {
     public GameObject[] rooms;
-
     public float spawn_change = 1f;
     public int id = 1; // pickable id
 
@@ -28,6 +27,10 @@ public class RoomGenerator : MonoBehaviour
 
     [SerializeField] public List<GameObject> Abilities;
     [SerializeField] public GameObject ItemPicker;
+
+    [Header("SFX")]
+    [SerializeField] [Range(0f, 1f)] public float sfxVolume = 1f;
+    [SerializeField] private AudioClip EnteringRoomAudio;
 
 
 
@@ -161,6 +164,10 @@ public class RoomGenerator : MonoBehaviour
 
     public void EnterRoom()
     {
+        if (EnteringRoomAudio)
+        {
+            AudioSource.PlayClipAtPoint(EnteringRoomAudio, transform.position,sfxVolume);
+        }
         navMeshSurface_Battle_.gameObject.SetActive(true);
         navMeshSurface_.gameObject.SetActive(false);
     }

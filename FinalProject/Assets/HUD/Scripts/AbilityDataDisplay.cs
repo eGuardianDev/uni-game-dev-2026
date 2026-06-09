@@ -5,7 +5,7 @@ using UnityEngine.UI;
 public class AbilityDataDisplay : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
 {
     [SerializeField] private GameObject tooltip_;
-    [SerializeField] private Vector2 offset_ = new Vector2(10, -10);
+    [SerializeField] private Vector3 offset_ = new Vector3(10, -10,0);
 
     private RectTransform tooltipRect_;
 
@@ -26,7 +26,7 @@ public class AbilityDataDisplay : MonoBehaviour, IPointerEnterHandler, IPointerE
         {
             float w = tooltipRect_.rect.width;
             float h = tooltipRect_.rect.height;
-            tooltipRect_.position = Input.mousePosition + new Vector3(-w/2, h / 2, 0);
+            tooltipRect_.position = Input.mousePosition + new Vector3(-w/2, h / 2, 0) + offset_;
             
             var ability = abilityManager_.abilities[ability_index_];
             if (ability != null)

@@ -1,5 +1,6 @@
 using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
 public class Enemy : MonoBehaviour
 {
     [Header("Stats")]
@@ -7,6 +8,13 @@ public class Enemy : MonoBehaviour
     [SerializeField] protected int damage_ = 10;
     [SerializeField] protected bool touch_damage_ = false;
     [SerializeField] protected int touch_damage_amount_ = 10;
+
+
+
+    [Header("SFX")]
+    [SerializeField] [Range(0f, 1f)] public float sfxVolume = 1f;
+    [SerializeField] private List<AudioClip> getDamagedSound;
+    [SerializeField] private List<AudioClip> getDefeatedSound;
         public int Damage
     {
         get
@@ -76,6 +84,11 @@ public class Enemy : MonoBehaviour
     // functions
     public virtual void GetDamage(int amount)
     {
+        if (getDamagedSound.Count > 0)
+        {
+            AudioClip clip = getDamagedSound[Random.Range(0, getDamagedSound.Count)];
+            AudioSource.PlayClipAtPoint(clip, transform.position,sfxVolume);
+        }
         int finalDamage = Mathf.Max(amount - armour_, 0);
         health_ -= finalDamage;
         StartCoroutine(FlashRed());
@@ -137,6 +150,11 @@ public class Enemy : MonoBehaviour
     }
     protected virtual void Die()
     {
+        if (getDefeatedSound.Count > 0)
+        {
+            AudioClip clip = getDefeatedSound[Random.Range(0, getDefeatedSound.Count)];
+            AudioSource.PlayClipAtPoint(clip, transform.position,sfxVolume);
+        }
         onDeath();
         hit_particles_.transform.SetParent(null); 
         hit_particles_.Emit(25);

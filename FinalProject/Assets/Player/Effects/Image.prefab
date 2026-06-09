@@ -89,9 +89,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::EffectDataDisplay
   tooltip_: {fileID: 0}
-  offset_: {x: 0, y: 0}
+  offset_: {x: -30, y: 40, z: 0}
   effectObject: {fileID: 0}
   effect_index_: 0
   effectManager_: {fileID: 0}
   ui: {fileID: 0}
+  image: {fileID: 0}
   updates: 0

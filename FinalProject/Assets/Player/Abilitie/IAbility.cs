@@ -35,12 +35,21 @@ public class Ability : MonoBehaviour
     {
         return false;
     }
+
+    [Header("SFX")]
+    [SerializeField] [Range(0f, 1f)] public float sfxVolume = 1f;
+    [SerializeField] private AudioClip castingAudio;
+
     public bool Cast()
     {
         if (IsOnCooldown && !isCastable()) return false;
         if (!OnCast())
         {
             return false;
+        }
+        if (castingAudio)
+        {
+            AudioSource.PlayClipAtPoint(castingAudio, transform.position,sfxVolume);
         }
         lastCastTime_ = Time.time;
         return true;

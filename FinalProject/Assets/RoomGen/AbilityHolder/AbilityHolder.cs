@@ -6,6 +6,14 @@ public class AbilityHolder : MonoBehaviour
     private SpriteRenderer icon;
 
     public GameObject ab;
+
+
+
+    [Header("SFX")]
+    [SerializeField] [Range(0f, 1f)] public float sfxVolume = 1f;
+    [SerializeField] private AudioClip ExchangingItemSound;
+
+
     // public Ability ab;
     void Start()
     {
@@ -58,6 +66,10 @@ public class AbilityHolder : MonoBehaviour
             icon.sprite = ab.GetComponent<Ability>().Icon;
         }
 
+        if (ExchangingItemSound)
+        {
+            AudioSource.PlayClipAtPoint(ExchangingItemSound, transform.position,sfxVolume * 0.5f);
+        }
     }
 
 

@@ -5,7 +5,6 @@ using System.Collections;
 using System.Collections.Generic;
 public class PlayerScript : MonoBehaviour
 {
-
     
     [Header("Stats")]
     [SerializeField] public int health_ = 100;
@@ -22,6 +21,10 @@ public class PlayerScript : MonoBehaviour
     [SerializeField] public int max_mana_ = 100;
     [SerializeField] public int final_max_mana_ = 100;
     
+    [Header("SFX")]
+    [SerializeField] [Range(0f, 1f)] public float sfxVolume = 1f;
+    [SerializeField] private List<AudioClip> getDamagedSound;
+    [SerializeField] private List<AudioClip> getDefeatedSound;
 
     public int Invicible = 0;
     public int Invicible_default = 0;
@@ -155,6 +158,14 @@ public class PlayerScript : MonoBehaviour
         {
             Die();
         }
+        else
+        {
+            if (getDamagedSound.Count > 0)
+            {
+                AudioClip clip = getDamagedSound[Random.Range(0, getDamagedSound.Count)];
+                AudioSource.PlayClipAtPoint(clip, transform.position, sfxVolume);
+            }
+        }
     }
     public void GetHealth(int amount)
     {
@@ -222,6 +233,11 @@ public class PlayerScript : MonoBehaviour
 
     void Die()
     {
+        if (getDefeatedSound.Count > 0)
+        {
+            AudioClip clip = getDefeatedSound[Random.Range(0, getDefeatedSound.Count)];
+            AudioSource.PlayClipAtPoint(clip, transform.position,sfxVolume);
+        }
         gm_ui_.Display_Death_Screen();
         Destroy(gameObject);
     }

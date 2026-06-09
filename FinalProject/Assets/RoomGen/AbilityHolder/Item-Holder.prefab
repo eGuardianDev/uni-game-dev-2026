@@ -107,6 +107,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::AbilityHolder
   ab: {fileID: 941544625466160449, guid: 4530c707a233e9deeb3904aa82b2d099, type: 3}
+  sfxVolume: 1
+  ExchangingItemSound: {fileID: 8300000, guid: 77f02110931ad8574999cf1da1f07fca, type: 3}
 --- !u!61 &3186884547434760371
 BoxCollider2D:
   m_ObjectHideFlags: 0

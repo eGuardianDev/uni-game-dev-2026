@@ -8,7 +8,7 @@ public class EffectDataDisplay : MonoBehaviour, IPointerEnterHandler, IPointerEx
 {
     
     [SerializeField] private GameObject tooltip_;
-    [SerializeField] private Vector2 offset_ = new Vector2(10, -10);
+    [SerializeField] private Vector3 offset_ = new Vector3(10, -10);
     public GameObject effectObject;
 
     private RectTransform tooltipRect_;
@@ -44,7 +44,7 @@ public class EffectDataDisplay : MonoBehaviour, IPointerEnterHandler, IPointerEx
         {
             float w = tooltipRect_.rect.width;
             float h = tooltipRect_.rect.height;
-            tooltipRect_.position = Input.mousePosition + new Vector3(-w/2, h / 2, 0);
+            tooltipRect_.position = Input.mousePosition + new Vector3(-w/2, h / 2, 0) + offset_;
             
             var effect = effectManager_.effects[effect_index_];
             if (effect != null)
