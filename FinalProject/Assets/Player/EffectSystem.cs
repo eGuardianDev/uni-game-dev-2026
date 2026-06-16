@@ -54,12 +54,12 @@ public class EffectSystem : MonoBehaviour
             }
         }
 
-
         playerScript.final_max_health_ = health;
-        playerScript.GetHealth(0);
+        playerScript.GetHealth();
         playerScript.final_attack_speed_ = attackSpeed;
         playerScript.final_max_mana_ = mana;
-        playerScript.FillMana(0);
+        playerScript.GetMana();
+
         playerScript.final_movement_speed_ = movementSpeed;
         playerScript.Invicible = invicibility;
 

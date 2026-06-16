@@ -10,7 +10,7 @@ public class HealAb : Ability
 
     protected override bool OnCast()
     {
-        this.player_script_.GetHealth(Damage);
+        this.player_script_.GetHeal(Damage);
 
         return true;
     }

@@ -26,6 +26,11 @@ public class PlayerScript : MonoBehaviour
     [SerializeField] private List<AudioClip> getDamagedSound;
     [SerializeField] private List<AudioClip> getDefeatedSound;
 
+    [Header("Game feel")]
+    [SerializeField] private GameObject Low_Health;
+    [SerializeField] private CameraShake Camera_Shake;
+    
+
     public int Invicible = 0;
     public int Invicible_default = 0;
     public int Health {
@@ -116,9 +121,12 @@ public class PlayerScript : MonoBehaviour
     IEnumerator regenerateMana()
     {
         yield return new WaitForSeconds(1f);
-        FillMana(2);
-        StartCoroutine(regenerateMana());
+        mana_ += 2;
+        mana_ = Mathf.Min(max_mana_, mana_);
+        mana_slider_.value = mana_;
+        mana_text_.text = mana_ + "/" + max_mana_;
 
+        StartCoroutine(regenerateMana());
     }
 
     void Update()
@@ -135,6 +143,11 @@ public class PlayerScript : MonoBehaviour
             c.a = 1f;
             sprites.color = c;
         }
+
+        if(health_ < max_health_ * 0.2)
+            Low_Health.SetActive(true);
+        else
+            Low_Health.SetActive(false);
 
         agent.speed = final_movement_speed_;
         if(gm_Behavior_.Is_Paused) return;
@@ -154,6 +167,8 @@ public class PlayerScript : MonoBehaviour
         health_slider_.value = health_;
         health_text_.text = health_ +"/"+ final_max_health_;
 
+        CameraShake.Instance.Shake(0.1f, 0.05f);
+        DamageTextSpawner.Instance.Spawn(amount, this.transform.position);
         if (health_ <= 0)
         {
             Die();
@@ -167,13 +182,23 @@ public class PlayerScript : MonoBehaviour
             }
         }
     }
-    public void GetHealth(int amount)
+    public void GetHealth()
+    {
+        health_ = Mathf.Min(health_, final_max_health_);
+
+        health_slider_.value = health_;
+        health_text_.text = health_ +"/"+ final_max_health_;
+    }
+
+    public void GetHeal(int amount)
     {
         health_ = Mathf.Min(health_+amount, final_max_health_);
 
         health_slider_.value = health_;
         health_text_.text = health_ +"/"+ final_max_health_;
+        DamageTextSpawner.Instance.Spawn(amount, this.transform.position, false, true);
 
+        
     }
 
     public void SetHealth(int amount)
@@ -182,6 +207,8 @@ public class PlayerScript : MonoBehaviour
 
         health_slider_.value = health_;
         health_text_.text = health_ +"/"+ final_max_health_;
+
+        DamageTextSpawner.Instance.Spawn(amount, this.transform.position, false, true);
     }
     public void SetMana(int amount)
     {
@@ -191,7 +218,12 @@ public class PlayerScript : MonoBehaviour
         mana_text_.text = mana_ + "/" + max_mana_;
 
     }
-    
+        
+    public void GetMana()
+    {
+        mana_slider_.value = mana_;
+        mana_text_.text = mana_ + "/" + max_mana_;
+    }
 
     public bool HasMana(int mana)
     {
@@ -212,6 +244,8 @@ public class PlayerScript : MonoBehaviour
         mana_ = Mathf.Min(max_mana_, mana_);
         mana_slider_.value = mana_;
         mana_text_.text = mana_ + "/" + max_mana_;
+
+        DamageTextSpawner.Instance.Spawn(amount, this.transform.position, true, false);
     }
     private float attackTimer_ = 0f;
 
@@ -255,7 +289,7 @@ public class PlayerScript : MonoBehaviour
             Health health = other.GetComponent<Health>();
             if (health != null)
             {
-                GetHealth(health.value);
+                GetHeal(health.value);
             }
             Destroy(other.gameObject);
         }

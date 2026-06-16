@@ -15,7 +15,7 @@ public class RoomCameraMapping : MonoBehaviour
         roomScript_ = this.transform.parent.Find("room").GetComponent<RoomDecorator>();
         // playerPosition_ = GameObject.Find("Player").GetComponent<Transform>();
         playerPosition_ = GameObject.FindWithTag("Player").transform;
-        cameraScript_ = Camera.main.GetComponent<CameraFollow>();
+        cameraScript_ = Camera.main.transform.parent.gameObject.GetComponent<CameraFollow>();
     }
 
     // Update is called once per frame

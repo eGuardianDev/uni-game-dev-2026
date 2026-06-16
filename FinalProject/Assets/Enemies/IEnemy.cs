@@ -93,10 +93,14 @@ public class Enemy : MonoBehaviour
         health_ -= finalDamage;
         StartCoroutine(FlashRed());
         
+        
+        DamageTextSpawner.Instance.Spawn(amount, this.transform.position, false, false);
+        
         if (health_ <= 0)
         {
             Die();
         }
+        
     }
     protected IEnumerator FlashRed()
     {
