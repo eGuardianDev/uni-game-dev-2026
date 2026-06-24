@@ -20,6 +20,8 @@ public class UI_Manager : MonoBehaviour
     [SerializeField] public TMP_Text LevelText;
     [SerializeField] public TMP_Text KilledEnemiesText;
     [SerializeField] public TMP_Text KilledEnemiesText2;
+    
+    [Header("Room generation")]
     [SerializeField] public RoomGenerator roomGen;
     [SerializeField] public GameObject pickUpAbilityMenu;
     [SerializeField] public TMP_Text pickUpAbilityMenuName;
@@ -33,18 +35,24 @@ public class UI_Manager : MonoBehaviour
 
     private CanvasGroup hudCanvasGroup;
    
+    [Header("Audio")]
+    [SerializeField] public float volume_level;
     
     [SerializeField] private Slider music_slider;
+    [SerializeField] private Slider volume_slider;
     [SerializeField]private AudioSource audioSource;
 
     void Start()
     {
-
+        volume_slider.value = volume_level;
         music_slider.value = audioSource.volume; // init slider to current volume
 
         music_slider.onValueChanged.AddListener(val =>
             audioSource.volume = val);
-            
+
+        volume_slider.onValueChanged.AddListener(val =>
+            volume_level = val);
+
         roomGen = this.GetComponent<RoomGenerator>();
     
         GameObject fader = GameObject.Find("FadeImage");

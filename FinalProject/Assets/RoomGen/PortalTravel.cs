@@ -22,7 +22,7 @@ public class PortalTravel : MonoBehaviour
         }
         else
         {
-            if(gd.level >= 3)
+            if(gd.level >= 2)
             {
                 ui.Final_Screen.SetActive(true);
             }

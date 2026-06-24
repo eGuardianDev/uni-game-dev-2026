@@ -31,6 +31,7 @@ public class RoomGenerator : MonoBehaviour
     [Header("SFX")]
     [SerializeField] [Range(0f, 1f)] public float sfxVolume = 1f;
     [SerializeField] private AudioClip EnteringRoomAudio;
+    [SerializeField] private UI_Manager gm_ui_;
 
 
 
@@ -72,6 +73,7 @@ public class RoomGenerator : MonoBehaviour
     {
         // int count = 0;
         // Debug.Log("Count: " + dept_counter.Count);
+        gm_ui_ = GameObject.Find("GameManager").GetComponent<UI_Manager>();
 
         if(GameData.Instance != null)
         {
@@ -180,6 +182,7 @@ public class RoomGenerator : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        sfxVolume = gm_ui_.volume_level;
     }
 
     public void Spawn_end_portal()

@@ -4850,6 +4850,7 @@ GameObject:
   - component: {fileID: 4482974794363950014}
   - component: {fileID: 4329978745190755413}
   - component: {fileID: 2944570264383676702}
+  - component: {fileID: 1682798381578633309}
   m_Layer: 9
   m_Name: Boss_spider
   m_TagString: Enemy
@@ -4961,7 +4962,10 @@ MonoBehaviour:
   damage_: 50
   touch_damage_: 1
   touch_damage_amount_: 10
-  attack_speed_: 2
+  sfxVolume: 1
+  getDamagedSound: []
+  getDefeatedSound: []
+  attack_speed_: 1
   movement_speed_: 7
   armour_: 0
   hit_particles_: {fileID: 2006112394441429590}
@@ -4976,9 +4980,22 @@ MonoBehaviour:
   money_drop_: 0
   gm_Behavior_: {fileID: 0}
   gm_Room_gen_: {fileID: 0}
+  gm_ui_: {fileID: 0}
   Player_in_room: 0
   wait_before_attacK_timer_: 3
   isDashing_: 0
+  animator: {fileID: 0}
+  phase_: 1
+  phase2_health_threshold_: 66
+  phase3_health_threshold_: 33
+  phase2_movement_speed_: 8
+  phase2_attack_speed_: 1.5
+  minion_prefab_: {fileID: 2100456511501419043, guid: 49d61ff31692aefd79ef9b2d58f1d0f0, type: 3}
+  minions_to_spawn_: 2
+  spawn_radius_: 2
+  minions_to_spawn_2_: 4
+  phase3_movement_speed_: 12
+  phase3_attack_speed_: 2.5
 --- !u!61 &4329978745190755413
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -5061,3 +5078,25 @@ CircleCollider2D:
   m_CompositeOrder: 0
   m_Offset: {x: 0, y: -0.16531792}
   m_Radius: 0.52931273
+--- !u!95 &1682798381578633309
+Animator:
+  serializedVersion: 7
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2100456511501419043}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: fd21487b6f1db6a569a00af23e761888, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_AnimatePhysics: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0

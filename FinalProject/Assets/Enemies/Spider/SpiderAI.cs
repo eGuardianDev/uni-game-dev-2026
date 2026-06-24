@@ -7,14 +7,24 @@ public class SpiderAI : Enemy
     [SerializeField] protected float wait_before_attacK_timer_ = 3f;
     private Vector2 _dashTarget;
     [SerializeField] private bool isDashing_ = false;
+    [SerializeField] private Animator animator;
+
     float wait_before_attack_ = 0f;
+    override protected void AfterStart()
+    {
+        animator = GetComponent<Animator>();
+    }
+
+
     override protected void Update()
     {
-        if(gm_Behavior_.Is_Paused) return;
+        if(gm_Behavior_ != null && gm_Behavior_.Is_Paused) return;
         
         if(!Player_in_room) return;
 
         attackTimer_ -= Time.deltaTime;
+        damageTimer_ -= Time.deltaTime;
+
         if (!isDashing_)
         {
             wait_before_attack_ -= Time.deltaTime;
@@ -85,7 +95,12 @@ public class SpiderAI : Enemy
             float overshoot = Random.Range(1, 5);
             _dashTarget = (Vector2)player_.position + dir * overshoot;
             isDashing_ = true;
+            if(animator != null)
+            {    
+                animator.SetBool("Walking",isDashing_);
+            }
         }
+
 
         transform.position = Vector2.MoveTowards(
             transform.position,
@@ -94,9 +109,13 @@ public class SpiderAI : Enemy
         );
 
         if (Vector2.Distance(transform.position, _dashTarget) < 0.1f)
-        {   
+        { 
             isDashing_ = false;
             wait_before_attack_ = wait_before_attacK_timer_;
+            if(animator != null)
+            {    
+                animator.SetBool("Walking",isDashing_);
+            }
         }
 
     }

@@ -12,6 +12,7 @@ public class AbilityHolder : MonoBehaviour
     [Header("SFX")]
     [SerializeField] [Range(0f, 1f)] public float sfxVolume = 1f;
     [SerializeField] private AudioClip ExchangingItemSound;
+    [SerializeField] private UI_Manager gm_ui_;
 
 
     // public Ability ab;
@@ -24,6 +25,8 @@ public class AbilityHolder : MonoBehaviour
             icon = transform.GetChild(0).GetComponent<SpriteRenderer>();
             icon.sprite = ab.GetComponent<Ability>().Icon;
         }
+        gm_ui_ = GameObject.Find("GameManager").GetComponent<UI_Manager>();
+
     }
 
 
@@ -32,6 +35,7 @@ public class AbilityHolder : MonoBehaviour
         // Debug.Log("Exchanged");
 
 
+        sfxVolume = gm_ui_.volume_level;
 
 
         GameObject player = GameObject.Find("Player");

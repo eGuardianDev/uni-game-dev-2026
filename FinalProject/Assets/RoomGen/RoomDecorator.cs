@@ -88,9 +88,9 @@ public class RoomDecorator : MonoBehaviour
 
             if(this.transform.parent.GetComponent<RoomSpawn>().Spawn_counter == roomGenerator.dept_counter.Count-1){
                 //boss
-                int enemy_index = roomGenerator.RandomRange(0,roomGenerator.Bosses.Length);
+                // int enemy_index = roomGenerator.RandomRange(0,roomGenerator.Bosses.Length);
                 GameObject enemy = Instantiate(
-                    roomGenerator.Bosses[enemy_index],
+                    roomGenerator.Bosses[roomGenerator.level-1],
                     this.transform.position,
                     Quaternion.identity,
                     this.transform

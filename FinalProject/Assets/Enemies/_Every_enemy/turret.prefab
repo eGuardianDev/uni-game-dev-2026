@@ -4849,6 +4849,7 @@ GameObject:
   - component: {fileID: 8554158345318979073}
   - component: {fileID: 2443295333129822819}
   - component: {fileID: 5272635107397988555}
+  - component: {fileID: 1965283081850073223}
   m_Layer: 9
   m_Name: turret
   m_TagString: Enemy
@@ -4972,10 +4973,12 @@ MonoBehaviour:
   money_drop_: 0
   gm_Behavior_: {fileID: 0}
   gm_Room_gen_: {fileID: 0}
+  gm_ui_: {fileID: 0}
   Player_in_room: 0
   lineRenderer_: {fileID: 4003641009416498711}
   warningDuration_: 3
   laserWidth_: 0.51
+  animator: {fileID: 0}
   spawnPoint_: {fileID: 3806919143898081488}
 --- !u!114 &2443295333129822819
 MonoBehaviour:
@@ -5036,6 +5039,28 @@ BoxCollider2D:
   m_AutoTiling: 0
   m_Size: {x: 1.3, y: 1.4}
   m_EdgeRadius: 0
+--- !u!95 &1965283081850073223
+Animator:
+  serializedVersion: 7
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7212861653447043221}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 57901d372cbe7fc7296352ec8dd791aa, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_AnimatePhysics: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
 --- !u!1 &8054855285680220415
 GameObject:
   m_ObjectHideFlags: 0

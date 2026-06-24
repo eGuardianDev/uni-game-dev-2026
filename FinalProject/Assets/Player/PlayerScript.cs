@@ -29,8 +29,10 @@ public class PlayerScript : MonoBehaviour
     [Header("Game feel")]
     [SerializeField] private GameObject Low_Health;
     [SerializeField] private CameraShake Camera_Shake;
+    [SerializeField] private Animator animator;
     
 
+    public int Invicible_frames = 0;
     public int Invicible = 0;
     public int Invicible_default = 0;
     public int Health {
@@ -70,6 +72,8 @@ public class PlayerScript : MonoBehaviour
     [SerializeField] private GameBehavior gm_Behavior_;
     [SerializeField] private UI_Manager gm_ui_;
 
+    [Header("Immunity Frames")]
+    [SerializeField] private float iframe_duration_ = 1f; // adjust in inspector
 
     UnityEngine.AI.NavMeshAgent agent;
 
@@ -77,6 +81,7 @@ public class PlayerScript : MonoBehaviour
     SpriteRenderer sprites;
     void Start()
     {
+        animator = GetComponent<Animator>();
         sprites = GetComponent<SpriteRenderer>();
         agent = GetComponent<UnityEngine.AI.NavMeshAgent>();
         final_max_health_ = max_health_;
@@ -103,6 +108,7 @@ public class PlayerScript : MonoBehaviour
         mana_text_.text = mana_ + "/" + max_mana_;
 
         StartCoroutine(regenerateMana());
+
     }
 
     public void update_HUD()
@@ -131,6 +137,8 @@ public class PlayerScript : MonoBehaviour
 
     void Update()
     {
+
+        sfxVolume = gm_ui_.volume_level;
         if(Invicible > 0)
         {
             Color c = sprites.color;
@@ -160,6 +168,7 @@ public class PlayerScript : MonoBehaviour
     // functions
     public void GetDamage(int amount)
     {
+        if(Invicible_frames >0) return;
         if(Invicible > 0) return;
         int finalDamage = Mathf.Max(amount - armour_, 0);
         health_ -= finalDamage;
@@ -169,6 +178,9 @@ public class PlayerScript : MonoBehaviour
 
         CameraShake.Instance.Shake(0.1f, 0.05f);
         DamageTextSpawner.Instance.Spawn(amount, this.transform.position);
+        
+        StartCoroutine(IFrames()); 
+        
         if (health_ <= 0)
         {
             Die();
@@ -251,6 +263,7 @@ public class PlayerScript : MonoBehaviour
 
     void Attack()
     {
+        animator.SetTrigger("Attacking");
         attackTimer_ -= Time.deltaTime;
         if (attackTimer_ <= 0f)
         {
@@ -265,6 +278,13 @@ public class PlayerScript : MonoBehaviour
         return false;
     }
 
+
+    private IEnumerator IFrames()
+    {
+        Invicible_frames++;
+        yield return new WaitForSeconds(iframe_duration_);
+        Invicible_frames--;
+    }
     void Die()
     {
         if (getDefeatedSound.Count > 0)

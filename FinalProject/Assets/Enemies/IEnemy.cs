@@ -13,7 +13,7 @@ public class Enemy : MonoBehaviour
 
     [Header("SFX")]
     [SerializeField] [Range(0f, 1f)] public float sfxVolume = 1f;
-    [SerializeField] private List<AudioClip> getDamagedSound;
+    [SerializeField] protected List<AudioClip> getDamagedSound;
     [SerializeField] private List<AudioClip> getDefeatedSound;
         public int Damage
     {
@@ -47,6 +47,8 @@ public class Enemy : MonoBehaviour
     [Header("Behavior")]
     [SerializeField] protected GameBehavior gm_Behavior_;
     [SerializeField] protected RoomGenerator gm_Room_gen_;
+    [SerializeField] private UI_Manager gm_ui_;
+
 
     [SerializeField] protected bool Player_in_room = false; 
     protected virtual void Start()
@@ -54,17 +56,28 @@ public class Enemy : MonoBehaviour
         Player_in_room = false;
         gm_Behavior_ = GameObject.Find("GameManager").GetComponent<GameBehavior>();
         gm_Room_gen_ = GameObject.Find("GameManager").GetComponent<RoomGenerator>();
+        gm_ui_ = GameObject.Find("GameManager").GetComponent<UI_Manager>();
 
         player_ = GameObject.FindGameObjectWithTag("Player")?.transform;
         player_script_ = GameObject.FindGameObjectWithTag("Player")?.GetComponent<PlayerScript>();
+
+        AfterStart();
     }
+    protected virtual void AfterStart()
+    {
+        
+    }
+
 
     protected virtual void Update()
     {
+        sfxVolume = gm_ui_.volume_level;
+
         if(gm_Behavior_.Is_Paused) return;
 
         if(!Player_in_room) return;
         attackTimer_ -= Time.deltaTime;
+        damageTimer_ -= Time.deltaTime;
 
         if (player_ == null) return;
 
@@ -80,10 +93,15 @@ public class Enemy : MonoBehaviour
                 MoveTowardsPlayer();
             }
         }
+        
+
+
     }
     // functions
     public virtual void GetDamage(int amount)
     {
+        if(!Player_in_room) return;
+
         if (getDamagedSound.Count > 0)
         {
             AudioClip clip = getDamagedSound[Random.Range(0, getDamagedSound.Count)];
@@ -112,6 +130,7 @@ public class Enemy : MonoBehaviour
     protected bool IsAttackOnCooldown => attackTimer_ > 0f;
     protected virtual void AttackPlayer()
     {
+        if(!Player_in_room) return;
         attackTimer_ -= Time.deltaTime;
         if (attackTimer_ <= 0f)
         {
@@ -123,6 +142,14 @@ public class Enemy : MonoBehaviour
 
     public virtual void Engage()
     {
+        StartCoroutine(EngageAfterDelay());
+    }
+
+    protected IEnumerator EngageAfterDelay()
+    {
+        GetComponent<SpriteRenderer>().color = Color.gray;
+        yield return new WaitForSeconds(2f);
+        GetComponent<SpriteRenderer>().color = Color.white;
         Player_in_room = true;
     }
     protected virtual bool Detectplayer_IsClose()
@@ -183,14 +210,14 @@ public class Enemy : MonoBehaviour
     {
     }
 
-    private float damageTimer_ = 0f;
-    private void OnTriggerEnter2D(Collider2D other)
+    protected float damageTimer_ = 0f;
+    private void OnTriggerStay2D(Collider2D other)
     {
+        if(!Player_in_room) return;
         if (touch_damage_)
         {       
             if (other.CompareTag("Player"))
             {
-                damageTimer_ -= Time.deltaTime;
                 if (damageTimer_ <= 0f)
                 {
                     other.GetComponent<PlayerScript>().GetDamage(touch_damage_amount_   );
